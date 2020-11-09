@@ -18,6 +18,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { Provider } from "unstated";
 
 function HomeScreen() {
   return (
@@ -55,7 +56,7 @@ function SettingsScreen() {
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function App() {
+const AppContainer = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -82,10 +83,15 @@ function App() {
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
-      {/* <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator> */}
     </NavigationContainer>
+  )
+}
+
+const App = () => {
+  return (
+    <Provider>
+      <AppContainer/>
+    </Provider>
   );
 }
 
