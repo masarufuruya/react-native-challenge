@@ -18,12 +18,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { Provider } from "unstated";
+import { Provider, Subscribe } from 'unstated';
+import HomeScreenContainer from './containers/HomeScreenContainer';
 
 function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
+      <Subscribe to={[HomeScreenContainer]}>
+        {container => (
+          <View>
+            <Text onPress={() => container.decrement()}>-</Text>
+            <Text>{container.state.count}</Text>
+            <Text onPress={() => container.increment()}>+</Text>
+          </View>
+        )}
+      </Subscribe>
     </View>
   );
 }
