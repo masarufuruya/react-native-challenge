@@ -1,5 +1,19 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
+import {
+  Button,
+  Container,
+  Form,
+  Textarea,
+  Content,
+  Input,
+  Item,
+  Header,
+  Left,
+  Body,
+  Title,
+  Right
+} from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -15,9 +29,26 @@ function HomeScreen() {
 
 function SettingsScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings Screen</Text>
-    </View>
+    <Container>
+      <Header>
+        <Left/>
+        <Body>
+          <Title>Settings</Title>
+        </Body>
+        <Right/>
+      </Header>
+      <Content padder>
+        <Form>
+          <Item regular style={styles.name}>
+            <Input placeholder='name' />
+          </Item>
+          <Textarea rowSpan={5} bordered placeholder="description" style={styles.description} />
+          <Button block warning style={styles.saveButton}>
+            <Text style={styles.saveButtonText}>Save</Text>
+          </Button>
+        </Form>
+      </Content>
+    </Container>
   );
 }
 
@@ -57,5 +88,20 @@ function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  name: {
+    marginTop: 8
+  },
+  description: {
+    marginTop: 15
+  },
+  saveButton: {
+    marginTop: 15,
+  },
+  saveButtonText: {
+    color: "#fff",
+  }
+});
 
 export default App;
