@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
+import { Button, Container, Form, Textarea, Content, Input, Item } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -15,9 +16,19 @@ function HomeScreen() {
 
 function SettingsScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings Screen</Text>
-    </View>
+    <Container>
+      <Content>
+        <Item regular>
+          <Input placeholder='name' />
+        </Item>
+        <Form>
+          <Textarea rowSpan={5} bordered placeholder="description" />
+        </Form>
+        <Button block warning>
+          <Text>Save</Text>
+        </Button>
+      </Content>
+    </Container>
   );
 }
 
