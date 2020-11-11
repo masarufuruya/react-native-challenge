@@ -9,7 +9,7 @@ type State = {
   collections: Array<Collection>,
 };
 
-export default class CollectionsContainer extends Container<State> {
+export default class CollectionsStore extends Container<State> {
   state = {
     collections: []
   }

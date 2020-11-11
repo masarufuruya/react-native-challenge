@@ -1,12 +1,12 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { Subscribe } from 'unstated';
-import CollectionsContainer, { Collection } from '../containers/CollectionsContainer'
+import CollectionsStore, { Collection } from '../stores/CollectionsStore'
 
 const HomeScreen = () => {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Subscribe to={[CollectionsContainer]}>
+      <Subscribe to={[CollectionsStore]}>
         {collectionsStore => (
           <View>
             {

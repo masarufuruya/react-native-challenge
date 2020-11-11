@@ -15,11 +15,24 @@ import {
   Right
 } from 'native-base'
 import { Subscribe } from 'unstated'
-import CollectionsContainer from '../containers/CollectionsContainer'
+import CollectionsStore from '../stores/CollectionsStore'
 
-const PostScreen = () => {
+const PostScreenContainer = () => {
+  return (
+    <Subscribe to={[CollectionsStore]}>
+      {collectionsStore => (
+        <PostScreen
+          collectionsStore={collectionsStore}
+        />
+      )}
+    </Subscribe>
+  )
+}
+
+const PostScreen = (props) => {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
+  const { collectionsStore } = props
 
   return (
     <Container>
@@ -31,38 +44,34 @@ const PostScreen = () => {
         <Right/>
       </Header>
       <Content padder>
-        <Subscribe to={[CollectionsContainer]}>
-          {collectionsStore => (
-          <Form>
-            <Item regular style={styles.name}>
-              <Input
-                placeholder='タイトル'
-                defaultValue={name}
-                onChangeText={(text) => setName(text)}
-              />
-            </Item>
-            <Textarea
-              rowSpan={5}
-              bordered
-              placeholder="説明文"
-              defaultValue={description}
-              style={styles.description}
-              onChangeText={(text) => setDescription(text)}
+        <Form>
+          <Item regular style={styles.name}>
+            <Input
+              placeholder='タイトル'
+              defaultValue={name}
+              onChangeText={(text) => setName(text)}
             />
-            <Button
-              block
-              warning
-              style={styles.saveButton}
-              onPress={() => collectionsStore.addCollection({ name, description })}
-            >
-              <Text style={styles.saveButtonText}>登録する</Text>
-            </Button>
-            <Text>現在のフォームの値</Text>
-            <Text>{name}</Text>
-            <Text>{description}</Text>
-          </Form>
-          )}
-        </Subscribe>
+          </Item>
+          <Textarea
+            rowSpan={5}
+            bordered
+            placeholder="説明文"
+            defaultValue={description}
+            style={styles.description}
+            onChangeText={(text) => setDescription(text)}
+          />
+          <Button
+            block
+            warning
+            style={styles.saveButton}
+            onPress={() => collectionsStore.addCollection({ name, description })}
+          >
+            <Text style={styles.saveButtonText}>登録する</Text>
+          </Button>
+          <Text>現在のフォームの値</Text>
+          <Text>{name}</Text>
+          <Text>{description}</Text>
+        </Form>
       </Content>
     </Container>
   )
@@ -83,4 +92,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PostScreen
+export default PostScreenContainer
