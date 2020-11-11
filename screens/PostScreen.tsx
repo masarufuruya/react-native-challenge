@@ -32,7 +32,13 @@ const PostScreenContainer = () => {
 const PostScreen = (props) => {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
-  const { collectionsStore } = props
+  const {
+    collectionsStore
+  } = props
+
+  const onPressSaveButton = () => {
+    collectionsStore.addCollection({ name, description })
+  }
 
   return (
     <Container>

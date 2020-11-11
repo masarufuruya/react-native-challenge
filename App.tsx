@@ -9,6 +9,54 @@ import PostScreen from './screens/PostScreen'
 
 const Tab = createBottomTabNavigator();
 
+// Setup for bottom tab navigation
+// const BottomTabNav = createBottomTabNavigator(
+//   {
+//     Posts: {
+//       screen: PostScreen
+//     },
+//     Albums: {
+//       screen: AlbumScreen
+//     },
+//     Tasks: {
+//       screen: TaskScreen
+//     },
+//     Friends: {
+//       screen: FriendScreen
+//     },
+//     Profile: {
+//       screen: ProfileScreen
+//     }
+//   },
+//   {
+//     navigationOptions: ({ navigation }) => ({
+//       tabBarIcon: ({ focused, tintColor }) => {
+//         // Determines which icon to show and what color it is
+//         const { routeName } = navigation.state;
+//         const iconName = bottomNavIconMap[routeName];
+
+//         return (
+//           <Icon
+//             name={iconName}
+//             color={tintColor}
+//             size={25}
+//             style={{ marginTop: 5 }}
+//           />
+//         );
+//       }
+//     }),
+//     tabBarOptions: {
+//       activeTintColor: "black",
+//       inactiveTintColor: "gray",
+//       activeBackgroundColor: theme.SECONDARY_COLOR,
+//       inactiveBackgroundColor: theme.SECONDARY_COLOR,
+//       labelStyle: {
+//         marginBottom: 5
+//       }
+//     }
+//   }
+// );
+
 const AppContainer = () => {
   return (
     <NavigationContainer>
