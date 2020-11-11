@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import {
   Button,
@@ -38,24 +38,45 @@ function HomeScreen() {
 }
 
 function SettingsScreen() {
+  const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+
   return (
     <Container>
       <Header>
         <Left/>
         <Body>
-          <Title>Settings</Title>
+          <Title>新規登録</Title>
         </Body>
         <Right/>
       </Header>
       <Content padder>
         <Form>
           <Item regular style={styles.name}>
-            <Input placeholder='name' />
+            <Input
+              placeholder='タイトル'
+              defaultValue={name}
+              onChangeText={(text) => setName(text)}
+            />
           </Item>
-          <Textarea rowSpan={5} bordered placeholder="description" style={styles.description} />
-          <Button block warning style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>Save</Text>
+          <Textarea
+            rowSpan={5}
+            bordered
+            placeholder="説明文"
+            defaultValue={description}
+            style={styles.description}
+            onChangeText={(text) => setDescription(text)}
+          />
+          <Button
+            block
+            warning
+            style={styles.saveButton}
+          >
+            <Text style={styles.saveButtonText}>登録する</Text>
           </Button>
+          <Text>現在のフォームの値</Text>
+          <Text>{name}</Text>
+          <Text>{description}</Text>
         </Form>
       </Content>
     </Container>
