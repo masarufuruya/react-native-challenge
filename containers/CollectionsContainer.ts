@@ -15,6 +15,7 @@ export default class CollectionsContainer extends Container<State> {
   }
 
   addCollection = (collection: Collection) => {
+    if (collection.name === "" || collection.description === "") return
     let collections = [...this.state.collections]
     collections.push(collection)
     this.setState({ collections })
