@@ -17,7 +17,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { Provider, Subscribe } from 'unstated';
 import HomeScreenContainer from './containers/HomeScreenContainer';
 
@@ -71,17 +71,14 @@ const AppContainer = () => {
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
+            // TODO: フォーカスでアイコン変えるかは検討
+            // let iconName;
             if (route.name === 'Home') {
-              iconName = focused
-                ? 'ios-information-circle'
-                : 'ios-information-circle-outline';
+              return <FontAwesome name="photo" size={size} color={color} />
             } else if (route.name === 'Settings') {
-              iconName = focused ? 'ios-list-box' : 'ios-list';
+              // iconName = focused ? 'ios-list-box' : 'ios-list';
+              return <FontAwesome name="camera" size={size} color={color} />
             }
-
-            return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
         tabBarOptions={{
@@ -89,8 +86,8 @@ const AppContainer = () => {
           inactiveTintColor: 'gray',
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: 'コレクション' }} />
+        <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: '登録' }} />
       </Tab.Navigator>
     </NavigationContainer>
   )
