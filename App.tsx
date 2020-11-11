@@ -19,17 +19,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome } from '@expo/vector-icons';
 import { Provider, Subscribe } from 'unstated';
-import HomeScreenContainer from './containers/HomeScreenContainer';
+import CollectionsContainer from './containers/CollectionsContainer';
 
 function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Subscribe to={[HomeScreenContainer]}>
-        {container => (
+      <Subscribe to={[CollectionsContainer]}>
+        {collectionsStore => (
           <View>
-            <Text onPress={() => container.decrement()}>-</Text>
-            <Text>{container.state.count}</Text>
-            <Text onPress={() => container.increment()}>+</Text>
+            <Text>{collectionsStore.state.collections.length}</Text>
           </View>
         )}
       </Subscribe>
@@ -51,33 +49,38 @@ function SettingsScreen() {
         <Right/>
       </Header>
       <Content padder>
-        <Form>
-          <Item regular style={styles.name}>
-            <Input
-              placeholder='タイトル'
-              defaultValue={name}
-              onChangeText={(text) => setName(text)}
+        <Subscribe to={[CollectionsContainer]}>
+          {collectionsStore => (
+          <Form>
+            <Item regular style={styles.name}>
+              <Input
+                placeholder='タイトル'
+                defaultValue={name}
+                onChangeText={(text) => setName(text)}
+              />
+            </Item>
+            <Textarea
+              rowSpan={5}
+              bordered
+              placeholder="説明文"
+              defaultValue={description}
+              style={styles.description}
+              onChangeText={(text) => setDescription(text)}
             />
-          </Item>
-          <Textarea
-            rowSpan={5}
-            bordered
-            placeholder="説明文"
-            defaultValue={description}
-            style={styles.description}
-            onChangeText={(text) => setDescription(text)}
-          />
-          <Button
-            block
-            warning
-            style={styles.saveButton}
-          >
-            <Text style={styles.saveButtonText}>登録する</Text>
-          </Button>
-          <Text>現在のフォームの値</Text>
-          <Text>{name}</Text>
-          <Text>{description}</Text>
-        </Form>
+            <Button
+              block
+              warning
+              style={styles.saveButton}
+              onPress={() => collectionsStore.addCollection({ name, description })}
+            >
+              <Text style={styles.saveButtonText}>登録する</Text>
+            </Button>
+            <Text>現在のフォームの値</Text>
+            <Text>{name}</Text>
+            <Text>{description}</Text>
+          </Form>
+          )}
+        </Subscribe>
       </Content>
     </Container>
   );
