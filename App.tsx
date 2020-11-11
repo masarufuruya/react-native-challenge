@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import {
   Button,
@@ -17,7 +17,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { Provider, Subscribe } from 'unstated';
 import HomeScreenContainer from './containers/HomeScreenContainer';
 
@@ -38,24 +38,45 @@ function HomeScreen() {
 }
 
 function SettingsScreen() {
+  const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+
   return (
     <Container>
       <Header>
         <Left/>
         <Body>
-          <Title>Settings</Title>
+          <Title>新規登録</Title>
         </Body>
         <Right/>
       </Header>
       <Content padder>
         <Form>
           <Item regular style={styles.name}>
-            <Input placeholder='name' />
+            <Input
+              placeholder='タイトル'
+              defaultValue={name}
+              onChangeText={(text) => setName(text)}
+            />
           </Item>
-          <Textarea rowSpan={5} bordered placeholder="description" style={styles.description} />
-          <Button block warning style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>Save</Text>
+          <Textarea
+            rowSpan={5}
+            bordered
+            placeholder="説明文"
+            defaultValue={description}
+            style={styles.description}
+            onChangeText={(text) => setDescription(text)}
+          />
+          <Button
+            block
+            warning
+            style={styles.saveButton}
+          >
+            <Text style={styles.saveButtonText}>登録する</Text>
           </Button>
+          <Text>現在のフォームの値</Text>
+          <Text>{name}</Text>
+          <Text>{description}</Text>
         </Form>
       </Content>
     </Container>
@@ -71,17 +92,14 @@ const AppContainer = () => {
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
+            // TODO: フォーカスでアイコン変えるかは検討
+            // let iconName;
             if (route.name === 'Home') {
-              iconName = focused
-                ? 'ios-information-circle'
-                : 'ios-information-circle-outline';
+              return <FontAwesome name="photo" size={size} color={color} />
             } else if (route.name === 'Settings') {
-              iconName = focused ? 'ios-list-box' : 'ios-list';
+              // iconName = focused ? 'ios-list-box' : 'ios-list';
+              return <FontAwesome name="camera" size={size} color={color} />
             }
-
-            return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
         tabBarOptions={{
@@ -89,8 +107,8 @@ const AppContainer = () => {
           inactiveTintColor: 'gray',
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: 'コレクション' }} />
+        <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: '登録' }} />
       </Tab.Navigator>
     </NavigationContainer>
   )
