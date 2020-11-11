@@ -19,7 +19,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome } from '@expo/vector-icons';
 import { Provider, Subscribe } from 'unstated';
-import CollectionsContainer from './containers/CollectionsContainer';
+import CollectionsContainer, { Collection } from './containers/CollectionsContainer';
 
 function HomeScreen() {
   return (
@@ -27,7 +27,16 @@ function HomeScreen() {
       <Subscribe to={[CollectionsContainer]}>
         {collectionsStore => (
           <View>
-            <Text>{collectionsStore.state.collections.length}</Text>
+            {
+              collectionsStore.state.collections.map((collection: Collection, index: number) => {
+                return (
+                  <View key={index}>
+                    <Text>{collection.name}</Text>
+                    <Text>{collection.description}</Text>
+                  </View>
+                )
+              })
+            }
           </View>
         )}
       </Subscribe>
