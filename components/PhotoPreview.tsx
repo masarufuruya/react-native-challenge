@@ -12,7 +12,6 @@ const PhotoPreview = (props) => {
     <TouchableOpacity style={styles.container} onPress={() => pickImage()}>
       <MaterialCommunityIcons
         name="camera-plus-outline"
-        size={24}
         color="black"
         style={styles.photoIcon}
       />
