@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker'
 import React, { useState } from 'react'
-import { Text, StyleSheet, Platform, TouchableOpacity, Image } from 'react-native'
+import { Text, StyleSheet, Platform } from 'react-native'
 import {
   Button,
   Container,
@@ -16,10 +16,10 @@ import {
   Right,
 } from 'native-base'
 import { Subscribe } from 'unstated'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
 
 import CollectionsStore from '../stores/CollectionsStore'
+import PhotoPreview from '../components/PhotoPreview'
 
 const PostScreenContainer = () => {
   return (
@@ -93,22 +93,10 @@ const PostScreen = (props) => {
       </Header>
       <Content padder>
         <Form>
-          <TouchableOpacity style={styles.container} onPress={() => pickImage()}>
-            <MaterialCommunityIcons
-              name="camera-plus-outline"
-              size={24}
-              color="black"
-              style={styles.photoIcon}
-            />
-            <Image
-              source={{
-                uri: photo
-                  ? photo.uri
-                  : ""
-              }}
-              style={styles.avatar}
-            />
-          </TouchableOpacity>
+          <PhotoPreview
+            photo={photo}
+            pickImage={pickImage}
+          />
           <Item regular style={styles.name}>
             <Input
               placeholder='タイトル'
@@ -154,23 +142,6 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: "#fff",
   },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginBottom: 5
-  },
-  photoIcon: {
-    fontSize: 50,
-    position: "absolute",
-    top: 75
-  },
-  avatar: {
-    width: "100%",
-    height: 200,
-  }
 });
 
 export default PostScreenContainer
