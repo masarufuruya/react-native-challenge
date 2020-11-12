@@ -15,6 +15,8 @@ import {
   Right
 } from 'native-base'
 import { Subscribe } from 'unstated'
+import { useNavigation } from '@react-navigation/native';
+
 import CollectionsStore from '../stores/CollectionsStore'
 
 const PostScreenContainer = () => {
@@ -32,12 +34,23 @@ const PostScreenContainer = () => {
 const PostScreen = (props) => {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
+  const navigation = useNavigation();
+
   const {
-    collectionsStore
+    collectionsStore,
   } = props
 
+  const resetForm = () => {
+    setName("")
+    setDescription("")
+  }
+
   const onPressSaveButton = () => {
+    if (name === "" || description == "") return
     collectionsStore.addCollection({ name, description })
+    resetForm()
+    navigation.navigate("Home")
+    alert("登録しました")
   }
 
   return (
@@ -70,7 +83,7 @@ const PostScreen = (props) => {
             block
             warning
             style={styles.saveButton}
-            onPress={() => collectionsStore.addCollection({ name, description })}
+            onPress={() => onPressSaveButton()}
           >
             <Text style={styles.saveButtonText}>登録する</Text>
           </Button>
