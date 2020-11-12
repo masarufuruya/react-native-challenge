@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker'
-import React, { useEffect, useState } from 'react'
-import { Text, StyleSheet, Platform } from 'react-native'
+import React, { useState } from 'react'
+import { Text, StyleSheet, Platform, TouchableOpacity, Image } from 'react-native'
 import {
   Button,
   Container,
@@ -13,9 +13,10 @@ import {
   Left,
   Body,
   Title,
-  Right
+  Right,
 } from 'native-base'
 import { Subscribe } from 'unstated'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
 
 import CollectionsStore from '../stores/CollectionsStore'
@@ -35,42 +36,42 @@ const PostScreenContainer = () => {
 const PostScreen = (props) => {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
+  const [photo, setPhoto] = useState("")
   const navigation = useNavigation();
 
   const {
     collectionsStore,
   } = props
 
-  useEffect(() => {
-    (async () => {
-      //カメラロールの許可を取得する
-      if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
-        }
-      }
-    })();
-  }, []);
-
   const resetForm = () => {
     setName("")
     setDescription("")
+    setPhoto("")
   }
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestCameraRollPermissionsAsync()
 
-    console.log(result);
-
-    if (!result.cancelled) {
-      // setImage(result.uri);
+      if (status !== "granted") {
+        alert("Nós precisamos dessa permissão.");
+        return
+      }
     }
+
+    const data = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All
+    })
+
+    if (data.cancelled) {
+      return
+    }
+
+    if (!data.uri) {
+      return
+    }
+
+    setPhoto(data);
   };
 
   const onPressSaveButton = () => {
@@ -92,11 +93,22 @@ const PostScreen = (props) => {
       </Header>
       <Content padder>
         <Form>
-          <Button
-            onPress={() => pickImage()}
-          >
-            <Text>アップロード</Text>
-          </Button>
+          <TouchableOpacity style={styles.container} onPress={() => pickImage()}>
+            <MaterialCommunityIcons
+              name="camera-plus-outline"
+              size={24}
+              color="black"
+              style={styles.photoIcon}
+            />
+            <Image
+              source={{
+                uri: photo
+                  ? photo.uri
+                  : ""
+              }}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
           <Item regular style={styles.name}>
             <Input
               placeholder='タイトル'
@@ -141,6 +153,23 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     color: "#fff",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginBottom: 5
+  },
+  photoIcon: {
+    fontSize: 50,
+    position: "absolute",
+    top: 75
+  },
+  avatar: {
+    width: "100%",
+    height: 200,
   }
 });
 
