@@ -3,24 +3,16 @@ import { View, Text } from 'react-native'
 import { Subscribe } from 'unstated';
 import CollectionsStore, { Collection } from '../stores/CollectionsStore'
 
+import CollectionsGridView from '../components/CollectionsGridView'
+
 const HomeScreen = () => {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Subscribe to={[CollectionsStore]}>
         {collectionsStore => (
-          <View>
-            {
-              collectionsStore.state.collections.map((collection: Collection, index: number) => {
-                return (
-                  <View key={index}>
-                    <Text>{collection.name}</Text>
-                    <Text>{collection.description}</Text>
-                    <Text>{collection.photo}</Text>
-                  </View>
-                )
-              })
-            }
-          </View>
+          <CollectionsGridView
+            collections={collectionsStore.state.collections}
+          />
         )}
       </Subscribe>
     </View>
