@@ -3,6 +3,7 @@ import { Container } from "unstated";
 export type Collection = {
   name: string,
   description: string,
+  photo: string,
 }
 
 type State = {
