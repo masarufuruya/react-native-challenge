@@ -1,5 +1,6 @@
+import * as ImagePicker from 'expo-image-picker'
 import React, { useState } from 'react'
-import { Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet, Platform } from 'react-native'
 import {
   Button,
   Container,
@@ -12,12 +13,13 @@ import {
   Left,
   Body,
   Title,
-  Right
+  Right,
 } from 'native-base'
 import { Subscribe } from 'unstated'
 import { useNavigation } from '@react-navigation/native';
 
 import CollectionsStore from '../stores/CollectionsStore'
+import PhotoPreview from '../components/PhotoPreview'
 
 const PostScreenContainer = () => {
   return (
@@ -34,6 +36,7 @@ const PostScreenContainer = () => {
 const PostScreen = (props) => {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
+  const [photo, setPhoto] = useState("")
   const navigation = useNavigation();
 
   const {
@@ -43,7 +46,33 @@ const PostScreen = (props) => {
   const resetForm = () => {
     setName("")
     setDescription("")
+    setPhoto("")
   }
+
+  const pickImage = async () => {
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestCameraRollPermissionsAsync()
+
+      if (status !== "granted") {
+        alert("Nós precisamos dessa permissão.");
+        return
+      }
+    }
+
+    const data = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All
+    })
+
+    if (data.cancelled) {
+      return
+    }
+
+    if (!data.uri) {
+      return
+    }
+
+    setPhoto(data);
+  };
 
   const onPressSaveButton = () => {
     if (name === "" || description == "") return
@@ -64,6 +93,10 @@ const PostScreen = (props) => {
       </Header>
       <Content padder>
         <Form>
+          <PhotoPreview
+            photo={photo}
+            pickImage={pickImage}
+          />
           <Item regular style={styles.name}>
             <Input
               placeholder='タイトル'
@@ -108,7 +141,7 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     color: "#fff",
-  }
+  },
 });
 
 export default PostScreenContainer
