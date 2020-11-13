@@ -15,6 +15,7 @@ const HomeScreen = () => {
                   <View key={index}>
                     <Text>{collection.name}</Text>
                     <Text>{collection.description}</Text>
+                    <Text>{collection.photo}</Text>
                   </View>
                 )
               })

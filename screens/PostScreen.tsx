@@ -54,7 +54,7 @@ const PostScreen = (props) => {
       const { status } = await ImagePicker.requestCameraRollPermissionsAsync()
 
       if (status !== "granted") {
-        alert("Nós precisamos dessa permissão.");
+        alert("not granted");
         return
       }
     }
@@ -71,12 +71,12 @@ const PostScreen = (props) => {
       return
     }
 
-    setPhoto(data);
+    setPhoto(data.uri);
   };
 
   const onPressSaveButton = () => {
     if (name === "" || description == "") return
-    collectionsStore.addCollection({ name, description })
+    collectionsStore.addCollection({ name, description, photo })
     resetForm()
     navigation.navigate("Home")
     alert("登録しました")

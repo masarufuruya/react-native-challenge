@@ -18,7 +18,7 @@ const PhotoPreview = (props) => {
       <Image
         source={{
           uri: photo
-            ? photo.uri
+            ? photo
             : ""
         }}
         style={styles.photo}
