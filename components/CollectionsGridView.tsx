@@ -7,6 +7,7 @@ import {
   Image,
   View
 } from 'react-native'
+import { Collection } from '../stores/CollectionsStore'
 
 const ITEM_WIDTH = Dimensions.get('window').width;
 
@@ -19,7 +20,7 @@ const CollectionsGridView = (props) => {
     <ScrollView>
       <FlatList
         data={collections}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item: Collection, index: number) => index.toString()}
         numColumns={3}
 
         renderItem={({ item }) => (

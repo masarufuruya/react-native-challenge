@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { Subscribe } from 'unstated';
-import CollectionsStore, { Collection } from '../stores/CollectionsStore'
+import CollectionsStore from '../stores/CollectionsStore'
 
 import CollectionsGridView from '../components/CollectionsGridView'
 
