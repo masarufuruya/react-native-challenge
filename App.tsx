@@ -1,15 +1,27 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesome } from '@expo/vector-icons';
 import { Provider } from 'unstated';
 
 import HomeScreen from './screens/HomeScreen'
 import PostScreen from './screens/PostScreen'
+import PostDetailScreen from './screens/PostDetailScreen'
 
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
+const HomeStacks = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+    </Stack.Navigator>
+  );
+}
+
+const Tabs = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -20,7 +32,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStacks}
         options={{
           tabBarLabel: 'コレクション',
           tabBarIcon: ({ focused, color, size }) => (
@@ -45,7 +57,7 @@ const TabNavigator = () => {
 const AppContainer = () => {
   return (
     <NavigationContainer>
-      <TabNavigator/>
+      <Tabs/>
     </NavigationContainer>
   )
 }
