@@ -26,6 +26,11 @@ const HomeStacks = () => {
       <Stack.Screen
         name="PostDetail"
         component={PostDetailScreen}
+        options={({ route }) => (
+          {
+            title: route.params.collection.name
+          }
+        )}
       />
     </Stack.Navigator>
   );
