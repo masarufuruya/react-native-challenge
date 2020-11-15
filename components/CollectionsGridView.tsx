@@ -5,13 +5,21 @@ import {
   FlatList,
   StyleSheet,
   Image,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native'
-import { Collection } from '../stores/CollectionsStore'
+import { Collection } from '../stores/CollectionsStore';
+import { useNavigation } from '@react-navigation/native';
+
+type PropsType = {
+  collections: Array<Collection>
+}
 
 const ITEM_WIDTH = Dimensions.get('window').width;
 
-const CollectionsGridView = (props) => {
+const CollectionsGridView = (props: PropsType) => {
+  const navigation = useNavigation();
+
   const {
     collections,
   } = props
@@ -24,12 +32,16 @@ const CollectionsGridView = (props) => {
         numColumns={3}
 
         renderItem={({ item }) => (
-          <View>
-          <Image
-            source={{ uri: item.photo }}
-            style={styles.imageStyle}
-            />
-          </View>
+          <TouchableOpacity onPress={() =>
+            navigation.navigate('PostDetail', { collection: item })
+          }>
+            <View>
+              <Image
+                source={{ uri: item.photo }}
+                style={styles.imageStyle}
+              />
+            </View>
+          </TouchableOpacity>
         )}
       />
     </ScrollView>
