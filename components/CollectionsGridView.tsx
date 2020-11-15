@@ -32,7 +32,9 @@ const CollectionsGridView = (props: PropsType) => {
         numColumns={3}
 
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('PostDetail')}>
+          <TouchableOpacity onPress={() =>
+            navigation.navigate('PostDetail', { collection: item })
+          }>
             <View>
               <Image
                 source={{ uri: item.photo }}

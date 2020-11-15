@@ -1,15 +1,14 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import { Collection } from '../stores/CollectionsStore';
+import { useRoute } from '@react-navigation/native';
 
-type PropsType = {
-  collection: Collection
-}
+const PostDetailScreen = () => {
+  const route = useRoute();
 
-const PostDetailScreen = (props: PropsType) => {
   const {
     collection
-  } = props
+  } = route.params
 
   return (
     <View>
