@@ -4,6 +4,7 @@ export type Collection = {
   name: string,
   description: string,
   photo: string,
+  likeCount: number,
 }
 
 type State = {

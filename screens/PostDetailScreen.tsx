@@ -30,7 +30,7 @@ const PostDetailScreen = () => {
       <View style={styles.buttonContainer}>
         <Button bordered warning style={styles.likeButton}>
           <FontAwesome style={styles.likeIcon} name="heart" size={17} color="#EB9D3D" />
-          <Text>スキ 0</Text>
+          <Text>スキ {collection.likeCount ? collection.likeCount : 0}</Text>
         </Button>
         <Button bordered warning style={styles.editButton}>
           <FontAwesome style={styles.editIcon} name="edit" size={24} color="#EB9D3D" />
