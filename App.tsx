@@ -15,8 +15,23 @@ const Tab = createBottomTabNavigator();
 const HomeStacks = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerShown: false,
+          title: "コレクション"
+        }}
+      />
+      <Stack.Screen
+        name="PostDetail"
+        component={PostDetailScreen}
+        options={({ route }) => (
+          {
+            title: route.params.collection.name
+          }
+        )}
+      />
     </Stack.Navigator>
   );
 }
