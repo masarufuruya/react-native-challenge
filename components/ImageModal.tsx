@@ -3,27 +3,21 @@ import { Button, StyleSheet, View, Image } from 'react-native'
 import Modal from 'react-native-modal'
 
 type PropsType = {
-  imageUrl: string
+  imageUrl: string,
+  screenStore: object
 }
 
 const ImageModal = (props: PropsType) => {
-  const [isModalVisible, setModalVisible] = useState(false);
-
   const {
-    imageUrl
+    imageUrl,
+    screenStore
   } = props
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
 
   return (
     <View>
-      <Button title="Show modal" onPress={toggleModal} />
-
       <Modal
-        isVisible={isModalVisible}
-        onBackdropPress={() => setModalVisible(false)}
+        isVisible={screenStore.state.isModalVisible}
+        onBackdropPress={() => screenStore.toggleModal()}
         animationIn={"zoomIn"}
         animationOut={"zoomOut"}
       >
@@ -34,7 +28,6 @@ const ImageModal = (props: PropsType) => {
             }}
             style={styles.photo}
           />
-          {/* <Button title="Hide modal" onPress={toggleModal} /> */}
         </View>
       </Modal>
     </View>

@@ -13,8 +13,10 @@ import { Subscribe } from 'unstated'
 import { FontAwesome } from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
 
+import PostDetailScreenStore from '../stores/PostDetailScreenStore'
 import CollectionsStore from '../stores/CollectionsStore'
 import ImageModal from '../components/ImageModal';
+import { TouchableHighlight } from 'react-native';
 
 const PostDetailScreen = () => {
   const route = useRoute();
@@ -24,17 +26,22 @@ const PostDetailScreen = () => {
   } = route.params
 
   return (
-    <Subscribe to={[CollectionsStore]}>
-      {collectionsStore => (
+    <Subscribe to={[PostDetailScreenStore, CollectionsStore]}>
+      {(screenStore, collectionsStore) => (
         <View>
-          <Image
-            source={{
-              uri: collection.photo
-            }}
-            style={styles.photo}
-          />
+          <TouchableHighlight
+            onPress={() => screenStore.toggleModal()}
+          >
+            <Image
+              source={{
+                uri: collection.photo
+              }}
+              style={styles.photo}
+            />
+          </TouchableHighlight>
           <ImageModal
             imageUrl={collection.photo}
+            screenStore={screenStore}
           />
           <View style={styles.buttonContainer}>
             <Button
