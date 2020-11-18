@@ -15,8 +15,9 @@ import { useRoute } from '@react-navigation/native'
 
 import PostDetailScreenStore from '../stores/PostDetailScreenStore'
 import CollectionsStore from '../stores/CollectionsStore'
-import ImageModal from '../components/ImageModal';
-import { TouchableHighlight } from 'react-native';
+import ImageModal from '../components/ImageModal'
+import { TouchableWithoutFeedback } from 'react-native'
+import LottieView from 'lottie-react-native'
 
 const PostDetailScreen = () => {
   const route = useRoute();
@@ -29,7 +30,7 @@ const PostDetailScreen = () => {
     <Subscribe to={[PostDetailScreenStore, CollectionsStore]}>
       {(screenStore, collectionsStore) => (
         <View>
-          <TouchableHighlight
+          <TouchableWithoutFeedback
             onPress={() => screenStore.toggleModal()}
           >
             <Image
@@ -38,7 +39,13 @@ const PostDetailScreen = () => {
               }}
               style={styles.photo}
             />
-          </TouchableHighlight>
+          </TouchableWithoutFeedback>
+          <LottieView
+            source={require('../assets/lottie-sample-car.json')}
+            autoPlay
+            loop
+            style={{height: 200}}
+          />
           <ImageModal
             imageUrl={collection.photo}
             screenStore={screenStore}
