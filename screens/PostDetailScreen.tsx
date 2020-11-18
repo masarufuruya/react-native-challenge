@@ -12,7 +12,9 @@ import {
 import { Subscribe } from 'unstated'
 import { FontAwesome } from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
+
 import CollectionsStore from '../stores/CollectionsStore'
+import ImageModal from '../components/ImageModal';
 
 const PostDetailScreen = () => {
   const route = useRoute();
@@ -30,6 +32,9 @@ const PostDetailScreen = () => {
               uri: collection.photo
             }}
             style={styles.photo}
+          />
+          <ImageModal
+            imageUrl={collection.photo}
           />
           <View style={styles.buttonContainer}>
             <Button
