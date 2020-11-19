@@ -17,7 +17,6 @@ import PostDetailScreenStore from '../stores/PostDetailScreenStore'
 import CollectionsStore from '../stores/CollectionsStore'
 import ImageModal from '../components/ImageModal'
 import { TouchableWithoutFeedback } from 'react-native'
-import LottieView from 'lottie-react-native'
 
 const PostDetailScreen = () => {
   const route = useRoute();
@@ -40,12 +39,6 @@ const PostDetailScreen = () => {
               style={styles.photo}
             />
           </TouchableWithoutFeedback>
-          <LottieView
-            source={require('../assets/lottie-sample-car.json')}
-            autoPlay
-            loop
-            style={{height: 200}}
-          />
           <ImageModal
             imageUrl={collection.photo}
             screenStore={screenStore}
