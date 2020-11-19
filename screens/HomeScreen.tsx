@@ -1,8 +1,8 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Subscribe } from 'unstated';
-import CollectionsStore from '../stores/CollectionsStore'
 
+import CollectionsStore from '../stores/CollectionsStore'
 import CollectionsGridView from '../components/CollectionsGridView'
 
 const HomeScreen = () => {
