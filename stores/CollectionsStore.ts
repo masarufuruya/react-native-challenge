@@ -23,6 +23,24 @@ export default class CollectionsStore extends Container<State> {
     this.setState({ collections })
   }
 
+  updateCollection = (collection: Collection) => {
+    const {
+      collections
+    } = this.state
+    // TODO: firestoreのIDから取得するように実装
+    // nameで引いているのでnameは変更しないように注意
+    const collectionIndex = collections.findIndex(item => item.name === collection.name)
+
+    let newCollections: Array<Collection> = [...collections]
+    let newCollection: Collection = newCollections[collectionIndex]
+    newCollection.name = collection.name
+    newCollection.description = collection.description
+    newCollection.photo = collection.photo
+    newCollections[collectionIndex] = newCollection
+
+    this.setState({ collections: newCollections })
+  }
+
   likeCollection = (name: string) => {
     const {
       collections
