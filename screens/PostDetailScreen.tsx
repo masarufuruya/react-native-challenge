@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {
   Text,
   View,
   Image,
   StyleSheet,
   ScrollView,
+  TouchableOpacity,
+  TouchableWithoutFeedback
 } from 'react-native'
 import {
   Button,
@@ -12,18 +14,24 @@ import {
 import { Subscribe } from 'unstated'
 import { FontAwesome } from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
+import LottieView from 'lottie-react-native'
 
 import PostDetailScreenStore from '../stores/PostDetailScreenStore'
 import CollectionsStore from '../stores/CollectionsStore'
 import ImageModal from '../components/ImageModal'
-import { TouchableWithoutFeedback } from 'react-native'
 
 const PostDetailScreen = () => {
+  const animation = useRef(null)
   const route = useRoute();
 
   const {
     collection
   } = route.params
+
+  const onPressLikeButton = (collectionsStore, name: string) => {
+    animation.current.play()
+    collectionsStore.likeCollection(name)
+  }
 
   return (
     <Subscribe to={[PostDetailScreenStore, CollectionsStore]}>
@@ -48,11 +56,16 @@ const PostDetailScreen = () => {
               bordered
               warning
               style={styles.likeButton}
-              onPress={() => {
-                collectionsStore.likeCollection(collection.name)
-              }}
+              onPress={() => onPressLikeButton(collectionsStore, collection.name)}
             >
-              <FontAwesome style={styles.likeIcon} name="heart" size={17} color="#EB9D3D" />
+              <LottieView
+                source={require('../assets/fav.json')}
+                ref={animation}
+                style={{
+                  height: 40,
+                }}
+                loop={false}
+              />
               <Text>スキ {collection.likeCount ? collection.likeCount : 0}</Text>
             </Button>
             <Button bordered warning style={styles.editButton}>
