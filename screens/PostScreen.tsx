@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker'
 import React, { useState } from 'react'
-import { Text, StyleSheet, Platform, View } from 'react-native'
+import { Text, StyleSheet, Platform } from 'react-native'
 import {
   Button,
   Container,
@@ -17,7 +17,6 @@ import {
 } from 'native-base'
 import { Subscribe } from 'unstated'
 import { useNavigation } from '@react-navigation/native'
-import LottieView from 'lottie-react-native'
 
 import CollectionsStore from '../stores/CollectionsStore'
 import PhotoPreview from '../components/PhotoPreview'
@@ -92,16 +91,6 @@ const PostScreen = (props) => {
         </Body>
         <Right/>
       </Header>
-      <View style={styles.lottieContainer}>
-        <LottieView
-          source={require('../assets/fav.json')}
-          autoPlay
-          loop
-          style={{
-            height: 40,
-          }}
-        />
-      </View>
       <Content padder>
         <Form>
           <PhotoPreview
@@ -141,9 +130,6 @@ const PostScreen = (props) => {
 }
 
 const styles = StyleSheet.create({
-  lottieContainer: {
-    backgroundColor: "#fff"
-  },
   name: {
     marginTop: 8
   },
