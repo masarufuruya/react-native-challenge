@@ -16,7 +16,7 @@ import {
   Right,
 } from 'native-base'
 import { Subscribe } from 'unstated'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import CollectionsStore from '../stores/CollectionsStore'
 import PhotoPreview from '../components/PhotoPreview'
@@ -34,13 +34,16 @@ const PostScreenContainer = () => {
 }
 
 const PostScreen = (props) => {
-  const [name, setName] = useState("")
-  const [description, setDescription] = useState("")
-  const [photo, setPhoto] = useState("")
-  const navigation = useNavigation();
+  const navigation = useNavigation()
+  const route = useRoute()
+  const collection = route.params && route.params.collection
+
+  const [name, setName] = useState(collection ? collection.name : "")
+  const [description, setDescription] = useState(collection ? collection.description : "")
+  const [photo, setPhoto] = useState(collection ? collection.photo : "")
 
   const {
-    collectionsStore,
+    collectionsStore
   } = props
 
   const resetForm = () => {
@@ -76,21 +79,32 @@ const PostScreen = (props) => {
 
   const onPressSaveButton = () => {
     if (name === "" || description == "") return
-    collectionsStore.addCollection({ name, description, photo })
+    let alertText = "登録しました"
+
+    if (collection) {
+      alertText = "更新しました"
+      collectionsStore.updateCollection({ name, description, photo })
+    } else {
+      collectionsStore.addCollection({ name, description, photo })
+    }
     resetForm()
     navigation.navigate("Home")
-    alert("登録しました")
+    alert(alertText)
   }
 
   return (
     <Container>
-      <Header>
-        <Left/>
-        <Body>
-          <Title>新規登録</Title>
-        </Body>
-        <Right/>
-      </Header>
+      {collection ? (
+        <></>
+      ) : (
+        <Header>
+          <Left/>
+          <Body>
+            <Title>新規登録</Title>
+          </Body>
+          <Right/>
+        </Header>
+      )}
       <Content padder>
         <Form>
           <PhotoPreview
@@ -118,7 +132,7 @@ const PostScreen = (props) => {
             style={styles.saveButton}
             onPress={() => onPressSaveButton()}
           >
-            <Text style={styles.saveButtonText}>登録する</Text>
+            <Text style={styles.saveButtonText}>{collection ? "更新する" : "登録する"}</Text>
           </Button>
           <Text>現在のフォームの値</Text>
           <Text>{name}</Text>

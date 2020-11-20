@@ -5,7 +5,6 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   TouchableWithoutFeedback
 } from 'react-native'
 import {
@@ -13,7 +12,7 @@ import {
 } from 'native-base'
 import { Subscribe } from 'unstated'
 import { FontAwesome } from '@expo/vector-icons'
-import { useRoute } from '@react-navigation/native'
+import { useRoute, useNavigation } from '@react-navigation/native'
 import LottieView from 'lottie-react-native'
 
 import PostDetailScreenStore from '../stores/PostDetailScreenStore'
@@ -22,7 +21,8 @@ import ImageModal from '../components/ImageModal'
 
 const PostDetailScreen = () => {
   const animation = useRef(null)
-  const route = useRoute();
+  const route = useRoute()
+  const navigation = useNavigation()
 
   const {
     collection
@@ -31,6 +31,10 @@ const PostDetailScreen = () => {
   const onPressLikeButton = (collectionsStore, name: string) => {
     animation.current.play()
     collectionsStore.likeCollection(name)
+  }
+
+  const onPressEditButton = () => {
+    navigation.navigate('EditPost', { collection })
   }
 
   return (
@@ -68,7 +72,12 @@ const PostDetailScreen = () => {
               />
               <Text>スキ {collection.likeCount ? collection.likeCount : 0}</Text>
             </Button>
-            <Button bordered warning style={styles.editButton}>
+            <Button
+              bordered
+              warning
+              style={styles.editButton}
+              onPress={() => onPressEditButton()}
+            >
               <FontAwesome style={styles.editIcon} name="edit" size={24} color="#EB9D3D" />
               <Text>書く</Text>
             </Button>

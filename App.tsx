@@ -32,6 +32,13 @@ const HomeStacks = () => {
           }
         )}
       />
+      <Stack.Screen
+        name="EditPost"
+        component={PostScreen}
+        options={{
+          title: "編集"
+        }}
+      />
     </Stack.Navigator>
   );
 }
