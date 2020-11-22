@@ -1,4 +1,5 @@
-import { Container } from "unstated";
+import { Container } from "unstated"
+import Fire from "../utils/Fire"
 
 export type Collection = {
   name: string,
@@ -19,6 +20,10 @@ export default class CollectionsStore extends Container<State> {
   addCollection = (collection: Collection) => {
     if (collection.name === "" || collection.description === "") return
     let collections = [...this.state.collections]
+
+    collection.likeCount = 0
+    Fire.shared.createPost(collection)
+
     collections.push(collection)
     this.setState({ collections })
   }
