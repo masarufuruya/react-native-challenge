@@ -9,7 +9,8 @@ class Fire {
 
   createPost = async ({ name, description, photo, likeCount }) => {
     const createdAt = Date.now()
-    this.postCollection.add({
+    // ドキュメント追加 (IDは自動採番)
+    this.postCollectionReference.add({
       name,
       description,
       photo,
@@ -18,8 +19,23 @@ class Fire {
     })
   }
 
+  getPosts = async () => {
+    // getすることで実態となるSnapshotを取得できる
+    // getは非同期に実行されるのでawaitで実行する
+    // CollectionReferenceへgetした時はQuerySnapshoptになる
+    const postCollectionQuerySnapshot = await this.postCollectionReference.get()
+    let posts = []
+    // docsを取得する
+    postCollectionQuerySnapshot.forEach(doc => {
+      posts.push(doc.data())
+    })
+    return posts
+  }
+
   // TODO: 後で認証追加してユーザーコレクションのサブコレクションにする
-  get postCollection() {
+  get postCollectionReference() {
+    // CollectionReference(パス情報)を取得
+    // 追加・更新・削除の処理はReferenceに対して行う
     return firebase.firestore().collection('posts')
   }
 }
