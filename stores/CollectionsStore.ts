@@ -12,15 +12,26 @@ type State = {
   collections: Array<Collection>,
 };
 
+// 非同期処理はStore内で行う
+
 export default class CollectionsStore extends Container<State> {
   state = {
     collections: []
+  }
+
+  initializeCollectionsStore = async () => {
+    // Firebaseから取得
+    // asyncはPromiseを返すのでawaitで結果を受け取る
+    const collections = await Fire.shared.getPosts()
+
+    this.setState({ collections })
   }
 
   addCollection = (collection: Collection) => {
     if (collection.name === "" || collection.description === "") return
     let collections = [...this.state.collections]
 
+    // Firebaseへ登録
     collection.likeCount = 0
     Fire.shared.createPost(collection)
 
