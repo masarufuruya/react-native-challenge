@@ -1,5 +1,6 @@
 import firebase from 'firebase'
 import 'firebase/firestore'
+import { Collection } from '../stores/CollectionsStore'
 import { config } from './config'
 
 class Fire {
@@ -19,6 +20,23 @@ class Fire {
     })
   }
 
+  updatePost = async (post: Collection) => {
+    const postDocumentReference = this.db.collection('posts').doc(post.id)
+    await postDocumentReference.update({
+      name: post.name,
+      description: post.description,
+      photo: post.photo,
+      likeCount: post.likeCount,
+    })
+  }
+
+  updateLikeCount = async (id: string, likeCount: Number) => {
+    const postDocumentReference = this.db.collection('posts').doc(id)
+    await postDocumentReference.update({
+      likeCount: likeCount,
+    })
+  }
+
   getPosts = async () => {
     // getすることで実態となるSnapshotを取得できる
     // getは非同期に実行されるのでawaitで実行する
@@ -32,6 +50,10 @@ class Fire {
       posts.push(post)
     })
     return posts
+  }
+
+  get db() {
+    return firebase.firestore()
   }
 
   // TODO: 後で認証追加してユーザーコレクションのサブコレクションにする

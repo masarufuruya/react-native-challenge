@@ -84,7 +84,8 @@ const PostScreen = (props) => {
     if (collection) {
       alertText = "更新しました"
       const id = collection.id
-      collectionsStore.updateCollection({ id, name, description, photo })
+      const likeCount = collection.likeCount
+      collectionsStore.updateCollection({ id, name, description, photo, likeCount })
     } else {
       collectionsStore.addCollection({ name, description, photo })
     }
