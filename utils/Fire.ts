@@ -27,7 +27,9 @@ class Fire {
     let posts = []
     // docsを取得する
     postCollectionQuerySnapshot.forEach(doc => {
-      posts.push(doc.data())
+      let post = doc.data()
+      post.id = doc.id
+      posts.push(post)
     })
     return posts
   }

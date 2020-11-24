@@ -43,9 +43,7 @@ export default class CollectionsStore extends Container<State> {
     const {
       collections
     } = this.state
-    // TODO: firestoreのIDから取得するように実装
-    // nameで引いているのでnameは変更しないように注意
-    const collectionIndex = collections.findIndex(item => item.name === collection.name)
+    const collectionIndex = collections.findIndex(item => item.id === collection.id)
 
     let newCollections: Array<Collection> = [...collections]
     let newCollection: Collection = newCollections[collectionIndex]
@@ -57,12 +55,11 @@ export default class CollectionsStore extends Container<State> {
     this.setState({ collections: newCollections })
   }
 
-  likeCollection = (name: string) => {
+  likeCollection = (id: string) => {
     const {
       collections
     } = this.state
-    // TODO: firestoreのIDから取得するように実装
-    const collectionIndex = collections.findIndex(item => item.name === name)
+    const collectionIndex = collections.findIndex(item => item.id === id)
 
     let collection = collections[collectionIndex]
     if (collection.likeCount > 0) {
