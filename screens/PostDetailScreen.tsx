@@ -28,9 +28,9 @@ const PostDetailScreen = () => {
     collection
   } = route.params
 
-  const onPressLikeButton = (collectionsStore, name: string) => {
+  const onPressLikeButton = (collectionsStore, id: string) => {
     animation.current.play()
-    collectionsStore.likeCollection(name)
+    collectionsStore.likeCollection(id)
   }
 
   const onPressEditButton = () => {
@@ -60,7 +60,7 @@ const PostDetailScreen = () => {
               bordered
               warning
               style={styles.likeButton}
-              onPress={() => onPressLikeButton(collectionsStore, collection.name)}
+              onPress={() => onPressLikeButton(collectionsStore, collection.id)}
             >
               <LottieView
                 source={require('../assets/fav.json')}

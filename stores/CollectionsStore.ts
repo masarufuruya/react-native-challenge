@@ -1,7 +1,8 @@
 import { Container } from "unstated"
-import Fire from "../utils/Fire"
+import Fire from '../utils/Fire';
 
 export type Collection = {
+  id: string,
   name: string,
   description: string,
   photo: string,
@@ -39,14 +40,14 @@ export default class CollectionsStore extends Container<State> {
     this.setState({ collections })
   }
 
-  updateCollection = (collection: Collection) => {
+  updateCollection = async (collection: Collection) => {
     const {
       collections
     } = this.state
-    // TODO: firestoreのIDから取得するように実装
-    // nameで引いているのでnameは変更しないように注意
-    const collectionIndex = collections.findIndex(item => item.name === collection.name)
 
+    await Fire.shared.updatePost(collection)
+
+    const collectionIndex = collections.findIndex(item => item.id === collection.id)
     let newCollections: Array<Collection> = [...collections]
     let newCollection: Collection = newCollections[collectionIndex]
     newCollection.name = collection.name
@@ -57,19 +58,22 @@ export default class CollectionsStore extends Container<State> {
     this.setState({ collections: newCollections })
   }
 
-  likeCollection = (name: string) => {
+  likeCollection = async (id: string) => {
     const {
       collections
     } = this.state
-    // TODO: firestoreのIDから取得するように実装
-    const collectionIndex = collections.findIndex(item => item.name === name)
 
+    const collectionIndex = collections.findIndex(item => item.id === id)
     let collection = collections[collectionIndex]
+
     if (collection.likeCount > 0) {
       collection.likeCount = collection.likeCount + 1
     } else {
       collection.likeCount = 1
     }
+
+    await Fire.shared.updateLikeCount(id, collection.likeCount)
+
     let newCollections = [...collections]
     newCollections[collectionIndex] = collection
 
