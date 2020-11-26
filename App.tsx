@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesome } from '@expo/vector-icons';
 import { Provider } from 'unstated';
 
+/* screens */
+import { AuthScreen } from './screens/AuthScreen'
 import HomeScreen from './screens/HomeScreen'
 import PostScreen from './screens/PostScreen'
 import PostDetailScreen from './screens/PostDetailScreen'
@@ -77,9 +79,11 @@ const Tabs = () => {
 }
 
 const AppContainer = () => {
+  // const user = { id: "123" }
+  const user = null
   return (
     <NavigationContainer>
-      <Tabs/>
+      {!user ? <AuthScreen /> : <Tabs/>}
     </NavigationContainer>
   )
 }
