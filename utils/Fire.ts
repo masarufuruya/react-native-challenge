@@ -1,7 +1,11 @@
 import firebase from 'firebase'
 import 'firebase/firestore'
+import 'firebase/auth'
 import { Collection } from '../stores/CollectionsStore'
 import { config } from './config'
+
+/* types */
+import { User, initialUser } from '../types/user';
 
 class Fire {
   constructor() {
@@ -61,6 +65,26 @@ class Fire {
     // CollectionReference(パス情報)を取得
     // 追加・更新・削除の処理はReferenceに対して行う
     return firebase.firestore().collection('posts')
+  }
+}
+
+export const signin = async () => {
+  const userCredential = await firebase.auth().signInAnonymously()
+  const { uid } = userCredential.user
+  const userDoc = await firebase.firestore().collection("users").doc(uid).get()
+  //ユーザー情報が作られていない場合は初期化
+  if (!userDoc.exists) {
+    await firebase.firestore().collection("users").doc(uid).set(initialUser)
+    return {
+      ...initialUser,
+      id: uid
+    } as User
+  } else {
+    return {
+      //firestoreのドキュメントのdataはIDを返さないので展開して返している
+      id: uid,
+      ...userDoc.data()
+    } as User
   }
 }
 
