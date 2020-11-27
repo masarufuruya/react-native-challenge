@@ -136,9 +136,6 @@ const PostScreen = (props) => {
           >
             <Text style={styles.saveButtonText}>{collection ? "更新する" : "登録する"}</Text>
           </Button>
-          <Text>現在のフォームの値</Text>
-          <Text>{name}</Text>
-          <Text>{description}</Text>
         </Form>
       </Content>
     </Container>
