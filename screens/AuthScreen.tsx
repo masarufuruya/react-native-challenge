@@ -5,12 +5,31 @@ import {
   Text,
   View
 } from 'react-native'
+import { Subscribe } from "unstated"
 import { signin } from "../utils/Fire"
 
-export const AuthScreen = () => {
+/* store */
+import AuthUserStore from '../stores/AuthUserStore';
+
+const AuthScreenContainer = () => {
+  return (
+    <Subscribe to={[AuthUserStore]}>
+      {authUserStore => (
+        <AuthScreen
+          authUserStore={authUserStore}
+        />
+      )}
+    </Subscribe>
+  )
+}
+
+const AuthScreen = (props) => {
+  const { authUserStore } = props
+
   useEffect(() => {
     const fetchUser = async () => {
       const user = await signin()
+      authUserStore.setAuthUser(user)
     }
     fetchUser()
   }, [])
@@ -22,6 +41,8 @@ export const AuthScreen = () => {
     </View>
   )
 }
+
+export default AuthScreenContainer
 
 const styles = StyleSheet.create({
   container: {
