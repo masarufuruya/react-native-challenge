@@ -1,3 +1,4 @@
+import firebase from 'firebase'
 import * as ImagePicker from 'expo-image-picker'
 import React, { useState } from 'react'
 import { Text, StyleSheet, Platform } from 'react-native'
@@ -18,14 +19,19 @@ import {
 import { Subscribe } from 'unstated'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
-import CollectionsStore from '../stores/CollectionsStore'
+/* components */
 import PhotoPreview from '../components/PhotoPreview'
+
+/* stores */
+import AuthUserStore from '../stores/AuthUserStore';
+import CollectionsStore from '../stores/CollectionsStore'
 
 const PostScreenContainer = () => {
   return (
-    <Subscribe to={[CollectionsStore]}>
-      {collectionsStore => (
+    <Subscribe to={[AuthUserStore, CollectionsStore]}>
+      {(authUserStore, collectionsStore) => (
         <PostScreen
+          authUserStore={authUserStore}
           collectionsStore={collectionsStore}
         />
       )}
@@ -43,6 +49,7 @@ const PostScreen = (props) => {
   const [photo, setPhoto] = useState(collection ? collection.photo : "")
 
   const {
+    authUserStore,
     collectionsStore
   } = props
 
@@ -87,7 +94,13 @@ const PostScreen = (props) => {
       const likeCount = collection.likeCount
       collectionsStore.updateCollection({ id, name, description, photo, likeCount })
     } else {
-      collectionsStore.addCollection({ name, description, photo })
+      const newCollection = {
+        name,
+        description,
+        photo,
+        createdAt: firebase.firestore.Timestamp.now()
+      }
+      collectionsStore.addCollection(authUserStore.state.user.id, newCollection)
     }
     resetForm()
     navigation.navigate("Home")

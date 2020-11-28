@@ -7,23 +7,11 @@ import { config } from './config'
 /* types */
 import { User, initialUser } from '../types/user';
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(config)
+}
+
 class Fire {
-  constructor() {
-    firebase.initializeApp(config)
-  }
-
-  createPost = async ({ name, description, photo, likeCount }) => {
-    const createdAt = Date.now()
-    // ドキュメント追加 (IDは自動採番)
-    this.postCollectionReference.add({
-      name,
-      description,
-      photo,
-      likeCount,
-      createdAt
-    })
-  }
-
   updatePost = async (post: Collection) => {
     const postDocumentReference = this.db.collection('posts').doc(post.id)
     await postDocumentReference.update({
@@ -86,6 +74,15 @@ export const signin = async () => {
       ...userDoc.data()
     } as User
   }
+}
+
+export const createPost = async (userId: string, collection: Collection) => {
+  await firebase
+    .firestore()
+    .collection("users")
+    .doc(userId)
+    .collection("posts")
+    .add(collection);
 }
 
 Fire.shared = new Fire()
