@@ -1,5 +1,5 @@
 import { Container } from "unstated"
-import Fire from '../utils/Fire';
+import Fire, { createPost } from '../utils/Fire';
 
 export type Collection = {
   id: string,
@@ -28,13 +28,13 @@ export default class CollectionsStore extends Container<State> {
     this.setState({ collections })
   }
 
-  addCollection = (collection: Collection) => {
+  addCollection = (userId: string, collection: Collection) => {
     if (collection.name === "" || collection.description === "") return
     let collections = [...this.state.collections]
 
     // Firebaseへ登録
     collection.likeCount = 0
-    Fire.shared.createPost(collection)
+    createPost(userId, collection)
 
     collections.push(collection)
     this.setState({ collections })
