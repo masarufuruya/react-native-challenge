@@ -29,30 +29,8 @@ class Fire {
     })
   }
 
-  getPosts = async () => {
-    // getすることで実態となるSnapshotを取得できる
-    // getは非同期に実行されるのでawaitで実行する
-    // CollectionReferenceへgetした時はQuerySnapshoptになる
-    const postCollectionQuerySnapshot = await this.postCollectionReference.get()
-    let posts = []
-    // docsを取得する
-    postCollectionQuerySnapshot.forEach(doc => {
-      let post = doc.data()
-      post.id = doc.id
-      posts.push(post)
-    })
-    return posts
-  }
-
   get db() {
     return firebase.firestore()
-  }
-
-  // TODO: 後で認証追加してユーザーコレクションのサブコレクションにする
-  get postCollectionReference() {
-    // CollectionReference(パス情報)を取得
-    // 追加・更新・削除の処理はReferenceに対して行う
-    return firebase.firestore().collection('posts')
   }
 }
 
@@ -83,6 +61,20 @@ export const createPost = async (userId: string, collection: Collection) => {
     .doc(userId)
     .collection("posts")
     .add(collection);
+}
+
+export const getPosts = async (userId: string) => {
+  const postDocs = await firebase
+    .firestore()
+    .collection("users")
+    .doc(userId)
+    .collection("posts")
+    .orderBy("likeCount", "desc")
+    .get()
+
+  return postDocs.docs.map(
+    (doc) => ({ ...doc.data(), id: doc.id })
+  )
 }
 
 Fire.shared = new Fire()

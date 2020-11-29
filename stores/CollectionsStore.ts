@@ -1,5 +1,5 @@
 import { Container } from "unstated"
-import Fire, { createPost } from '../utils/Fire';
+import Fire, { createPost, getPosts } from '../utils/Fire';
 
 export type Collection = {
   id: string,
@@ -20,10 +20,8 @@ export default class CollectionsStore extends Container<State> {
     collections: []
   }
 
-  initializeCollectionsStore = async () => {
-    // Firebaseから取得
-    // asyncはPromiseを返すのでawaitで結果を受け取る
-    const collections = await Fire.shared.getPosts()
+  initializeCollectionsStore = async (userId: string) => {
+    const collections = await getPosts(userId)
 
     this.setState({ collections })
   }
