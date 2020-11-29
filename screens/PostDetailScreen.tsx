@@ -18,6 +18,7 @@ import LottieView from 'lottie-react-native'
 import PostDetailScreenStore from '../stores/PostDetailScreenStore'
 import CollectionsStore from '../stores/CollectionsStore'
 import ImageModal from '../components/ImageModal'
+import AuthUserStore from '../stores/AuthUserStore';
 
 const PostDetailScreen = () => {
   const animation = useRef(null)
@@ -28,9 +29,9 @@ const PostDetailScreen = () => {
     collection
   } = route.params
 
-  const onPressLikeButton = (collectionsStore, id: string) => {
+  const onPressLikeButton = (userId: string, collectionsStore, id: string) => {
     animation.current.play()
-    collectionsStore.likeCollection(id)
+    collectionsStore.likeCollection(userId, id)
   }
 
   const onPressEditButton = () => {
@@ -38,8 +39,8 @@ const PostDetailScreen = () => {
   }
 
   return (
-    <Subscribe to={[PostDetailScreenStore, CollectionsStore]}>
-      {(screenStore, collectionsStore) => (
+    <Subscribe to={[AuthUserStore, PostDetailScreenStore, CollectionsStore]}>
+      {(authUserStore, screenStore, collectionsStore) => (
         <View>
           <TouchableWithoutFeedback
             onPress={() => screenStore.toggleModal()}
@@ -60,7 +61,7 @@ const PostDetailScreen = () => {
               bordered
               warning
               style={styles.likeButton}
-              onPress={() => onPressLikeButton(collectionsStore, collection.id)}
+              onPress={() => onPressLikeButton(authUserStore.state.user.id, collectionsStore, collection.id)}
             >
               <LottieView
                 source={require('../assets/fav.json')}

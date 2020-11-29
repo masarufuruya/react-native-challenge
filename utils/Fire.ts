@@ -11,29 +11,6 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config)
 }
 
-class Fire {
-  updatePost = async (post: Collection) => {
-    const postDocumentReference = this.db.collection('posts').doc(post.id)
-    await postDocumentReference.update({
-      name: post.name,
-      description: post.description,
-      photo: post.photo,
-      likeCount: post.likeCount,
-    })
-  }
-
-  updateLikeCount = async (id: string, likeCount: Number) => {
-    const postDocumentReference = this.db.collection('posts').doc(id)
-    await postDocumentReference.update({
-      likeCount: likeCount,
-    })
-  }
-
-  get db() {
-    return firebase.firestore()
-  }
-}
-
 export const signin = async () => {
   const userCredential = await firebase.auth().signInAnonymously()
   const { uid } = userCredential.user
@@ -77,5 +54,25 @@ export const getPosts = async (userId: string) => {
   )
 }
 
-Fire.shared = new Fire()
-export default Fire
+export const updateLikeCount = async (userId: string, collectionId: string, likeCount: number) => {
+  await firebase.
+    firestore().
+    collection("users").
+    doc(userId).
+    collection("posts").
+    doc(collectionId).
+    update({
+      likeCount,
+      updatedAt: firebase.firestore.Timestamp.now()
+    })
+}
+
+export const updatePost = async (userId: string, collection: Collection) => {
+  await firebase.
+    firestore().
+    collection("users").
+    doc(userId).
+    collection("posts").
+    doc(collection.id).
+    update(collection)
+}

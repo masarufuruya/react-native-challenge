@@ -87,12 +87,19 @@ const PostScreen = (props) => {
   const onPressSaveButton = () => {
     if (name === "" || description == "") return
     let alertText = "登録しました"
+    const userId = authUserStore.state.user.id
 
     if (collection) {
       alertText = "更新しました"
-      const id = collection.id
-      const likeCount = collection.likeCount
-      collectionsStore.updateCollection({ id, name, description, photo, likeCount })
+      const updateCollection = {
+        id: collection.id,
+        name,
+        description,
+        photo,
+        likeCount: collection.likeCount,
+        updatedAt: firebase.firestore.Timestamp.now()
+      }
+      collectionsStore.updateCollection(userId, updateCollection)
     } else {
       const newCollection = {
         name,
@@ -100,7 +107,7 @@ const PostScreen = (props) => {
         photo,
         createdAt: firebase.firestore.Timestamp.now()
       }
-      collectionsStore.addCollection(authUserStore.state.user.id, newCollection)
+      collectionsStore.addCollection(userId, newCollection)
     }
     resetForm()
     navigation.navigate("Home")
