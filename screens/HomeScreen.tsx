@@ -2,16 +2,21 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Subscribe } from 'unstated';
 
-import CollectionsStore from '../stores/CollectionsStore';
+/* components */
 import CollectionsGridView from '../components/CollectionsGridView'
+
+/* stores */
+import AuthUserStore from '../stores/AuthUserStore';
+import CollectionsStore from '../stores/CollectionsStore';
 
 // HOC化してcollectionsStoreを渡すことでHomeScreen内でstoreへアクセスできるようにする
 const HomeScreenContainer = () => {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Subscribe to={[CollectionsStore]}>
-        {collectionsStore => (
+      <Subscribe to={[AuthUserStore, CollectionsStore]}>
+        {(authUserStore, collectionsStore) => (
           <HomeScreen
+            authUserStore={authUserStore}
             collectionsStore={collectionsStore}
           />
         )}
@@ -22,8 +27,11 @@ const HomeScreenContainer = () => {
 
 class HomeScreen extends Component {
   componentDidMount() {
-    const { collectionsStore } = this.props
-    collectionsStore.initializeCollectionsStore()
+    const {
+      authUserStore,
+      collectionsStore
+    } = this.props
+    collectionsStore.initializeCollectionsStore(authUserStore.state.user.id)
   }
 
   render() {

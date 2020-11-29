@@ -11,51 +11,6 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config)
 }
 
-class Fire {
-  updatePost = async (post: Collection) => {
-    const postDocumentReference = this.db.collection('posts').doc(post.id)
-    await postDocumentReference.update({
-      name: post.name,
-      description: post.description,
-      photo: post.photo,
-      likeCount: post.likeCount,
-    })
-  }
-
-  updateLikeCount = async (id: string, likeCount: Number) => {
-    const postDocumentReference = this.db.collection('posts').doc(id)
-    await postDocumentReference.update({
-      likeCount: likeCount,
-    })
-  }
-
-  getPosts = async () => {
-    // getすることで実態となるSnapshotを取得できる
-    // getは非同期に実行されるのでawaitで実行する
-    // CollectionReferenceへgetした時はQuerySnapshoptになる
-    const postCollectionQuerySnapshot = await this.postCollectionReference.get()
-    let posts = []
-    // docsを取得する
-    postCollectionQuerySnapshot.forEach(doc => {
-      let post = doc.data()
-      post.id = doc.id
-      posts.push(post)
-    })
-    return posts
-  }
-
-  get db() {
-    return firebase.firestore()
-  }
-
-  // TODO: 後で認証追加してユーザーコレクションのサブコレクションにする
-  get postCollectionReference() {
-    // CollectionReference(パス情報)を取得
-    // 追加・更新・削除の処理はReferenceに対して行う
-    return firebase.firestore().collection('posts')
-  }
-}
-
 export const signin = async () => {
   const userCredential = await firebase.auth().signInAnonymously()
   const { uid } = userCredential.user
@@ -85,5 +40,39 @@ export const createPost = async (userId: string, collection: Collection) => {
     .add(collection);
 }
 
-Fire.shared = new Fire()
-export default Fire
+export const getPosts = async (userId: string) => {
+  const postDocs = await firebase
+    .firestore()
+    .collection("users")
+    .doc(userId)
+    .collection("posts")
+    .orderBy("likeCount", "desc")
+    .get()
+
+  return postDocs.docs.map(
+    (doc) => ({ ...doc.data(), id: doc.id })
+  )
+}
+
+export const updateLikeCount = async (userId: string, collectionId: string, likeCount: number) => {
+  await firebase.
+    firestore().
+    collection("users").
+    doc(userId).
+    collection("posts").
+    doc(collectionId).
+    update({
+      likeCount,
+      updatedAt: firebase.firestore.Timestamp.now()
+    })
+}
+
+export const updatePost = async (userId: string, collection: Collection) => {
+  await firebase.
+    firestore().
+    collection("users").
+    doc(userId).
+    collection("posts").
+    doc(collection.id).
+    update(collection)
+}

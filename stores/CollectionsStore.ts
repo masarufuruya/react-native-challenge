@@ -1,5 +1,5 @@
 import { Container } from "unstated"
-import Fire, { createPost } from '../utils/Fire';
+import { createPost, getPosts, updateLikeCount, updatePost } from '../utils/Fire';
 
 export type Collection = {
   id: string,
@@ -20,10 +20,8 @@ export default class CollectionsStore extends Container<State> {
     collections: []
   }
 
-  initializeCollectionsStore = async () => {
-    // Firebaseから取得
-    // asyncはPromiseを返すのでawaitで結果を受け取る
-    const collections = await Fire.shared.getPosts()
+  initializeCollectionsStore = async (userId: string) => {
+    const collections = await getPosts(userId)
 
     this.setState({ collections })
   }
@@ -40,12 +38,12 @@ export default class CollectionsStore extends Container<State> {
     this.setState({ collections })
   }
 
-  updateCollection = async (collection: Collection) => {
+  updateCollection = async (userId: string, collection: Collection) => {
     const {
       collections
     } = this.state
 
-    await Fire.shared.updatePost(collection)
+    await updatePost(userId, collection)
 
     const collectionIndex = collections.findIndex(item => item.id === collection.id)
     let newCollections: Array<Collection> = [...collections]
@@ -58,7 +56,7 @@ export default class CollectionsStore extends Container<State> {
     this.setState({ collections: newCollections })
   }
 
-  likeCollection = async (id: string) => {
+  likeCollection = async (userId: string, id: string) => {
     const {
       collections
     } = this.state
@@ -72,7 +70,7 @@ export default class CollectionsStore extends Container<State> {
       collection.likeCount = 1
     }
 
-    await Fire.shared.updateLikeCount(id, collection.likeCount)
+    await updateLikeCount(userId, id, collection.likeCount)
 
     let newCollections = [...collections]
     newCollections[collectionIndex] = collection
