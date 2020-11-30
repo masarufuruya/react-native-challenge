@@ -32,7 +32,7 @@ export const signin = async () => {
 }
 
 export const createPost = async (userId: string, collection: Collection) => {
-  await firebase
+  return await firebase
     .firestore()
     .collection("users")
     .doc(userId)
