@@ -35,8 +35,6 @@
       "managers": ["npm"],
       "packageNames": [
         "expo",
-        "react-native",
-        "typescript"
       ],
       "enabled": true
     }
