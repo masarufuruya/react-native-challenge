@@ -1,0 +1,42 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "packageRules": [
+    {
+      "managers": ["npm"],
+      "packageNames": [
+        "@react-native-community/masked-view",
+        "@react-navigation/bottom-tabs",
+        "@react-navigation/native",
+        "@react-navigation/stack",
+        "expo-image-picker",
+        "expo-status-bar",
+        "firebase",
+        "lottie-react-native",
+        "native-base",
+        "react",
+        "react-dom",
+        "react-native-gesture-handler",
+        "react-native-modal",
+        "react-native-reanimated",
+        "react-native-safe-area-context",
+        "react-native-screens",
+        "react-native-web",
+        "unstated",
+        "@babel/core",
+        "@types/react",
+        "@types/react-dom",
+        "@types/react-native"
+      ],
+      "enabled": false
+    },
+    {
+      "managers": ["npm"],
+      "packageNames": [
+        "expo"
+      ],
+      "enabled": true
+    }
+  ]
+}
