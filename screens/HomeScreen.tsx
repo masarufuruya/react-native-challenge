@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, ScrollView, SafeAreaView, RefreshControl } from 'react-native'
 import { Subscribe } from 'unstated';
 
 /* components */
@@ -26,20 +26,37 @@ const HomeScreenContainer = () => {
 }
 
 class HomeScreen extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      refreshing: false
+    }
+  }
+
   componentDidMount() {
-    const {
-      authUserStore,
-      collectionsStore
-    } = this.props
-    collectionsStore.initializeCollectionsStore(authUserStore.state.user.id)
+    this.onRefresh()
+  }
+
+  async onRefresh() {
+    this.setState({ refreshing: true })
+    const { authUserStore, collectionsStore } = this.props
+    collectionsStore.getCollections(authUserStore.state.user.id)
+    this.setState({ refreshing: false })
   }
 
   render() {
     const { collectionsStore } = this.props
     return (
-      <CollectionsGridView
-        collections={collectionsStore.state.collections}
-      />
+      <SafeAreaView>
+        <ScrollView
+          refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={() => this.onRefresh()} />}
+        >
+          <CollectionsGridView
+            collections={collectionsStore.state.collections}
+          />
+        </ScrollView>
+      </SafeAreaView>
     )
   }
 }

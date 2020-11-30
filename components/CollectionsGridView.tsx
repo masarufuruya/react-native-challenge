@@ -1,12 +1,11 @@
 import React from 'react'
 import {
-  ScrollView,
   Dimensions,
   FlatList,
   StyleSheet,
   Image,
   View,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native'
 import { Collection } from '../stores/CollectionsStore';
 import { useNavigation } from '@react-navigation/native';
@@ -25,26 +24,24 @@ const CollectionsGridView = (props: PropsType) => {
   } = props
 
   return (
-    <ScrollView>
-      <FlatList
-        data={collections}
-        keyExtractor={(item: Collection, index: number) => index.toString()}
-        numColumns={3}
+    <FlatList
+      data={collections}
+      keyExtractor={(item: Collection, index: number) => index.toString()}
+      numColumns={3}
 
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() =>
-            navigation.navigate('PostDetail', { collection: item })
-          }>
-            <View>
-              <Image
-                source={{ uri: item.photo }}
-                style={styles.imageStyle}
-              />
-            </View>
-          </TouchableOpacity>
-        )}
-      />
-    </ScrollView>
+      renderItem={({ item }) => (
+        <TouchableOpacity onPress={() =>
+          navigation.navigate('PostDetail', { collection: item })
+        }>
+          <View>
+            <Image
+              source={{ uri: item.photo }}
+              style={styles.imageStyle}
+            />
+          </View>
+        </TouchableOpacity>
+      )}
+    />
   )
 }
 

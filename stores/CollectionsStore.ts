@@ -20,9 +20,8 @@ export default class CollectionsStore extends Container<State> {
     collections: []
   }
 
-  initializeCollectionsStore = async (userId: string) => {
+  getCollections = async (userId: string) => {
     const collections = await getPosts(userId)
-
     this.setState({ collections })
   }
 
@@ -33,7 +32,6 @@ export default class CollectionsStore extends Container<State> {
     const response = await createPost(userId, collection)
     const docId = (await response.get()).id
     collection.id = docId
-    collection.likeCount = 0
 
     collections.push(collection)
     this.setState({ collections })

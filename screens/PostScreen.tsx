@@ -105,6 +105,7 @@ const PostScreen = (props) => {
         name,
         description,
         photo,
+        likeCount: 0,
         createdAt: firebase.firestore.Timestamp.now()
       }
       collectionsStore.addCollection(userId, newCollection)
