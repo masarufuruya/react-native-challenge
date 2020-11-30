@@ -34,7 +34,7 @@
     {
       "managers": ["npm"],
       "packageNames": [
-        "expo",
+        "expo"
       ],
       "enabled": true
     }
