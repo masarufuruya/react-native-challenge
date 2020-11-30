@@ -20,19 +20,18 @@ export default class CollectionsStore extends Container<State> {
     collections: []
   }
 
-  initializeCollectionsStore = async (userId: string) => {
+  getCollections = async (userId: string) => {
     const collections = await getPosts(userId)
-
     this.setState({ collections })
   }
 
-  addCollection = (userId: string, collection: Collection) => {
+  addCollection = async (userId: string, collection: Collection) => {
     if (collection.name === "" || collection.description === "") return
     let collections = [...this.state.collections]
 
-    // Firebaseへ登録
-    collection.likeCount = 0
-    createPost(userId, collection)
+    const response = await createPost(userId, collection)
+    const docId = (await response.get()).id
+    collection.id = docId
 
     collections.push(collection)
     this.setState({ collections })
