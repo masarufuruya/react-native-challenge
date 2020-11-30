@@ -27,7 +27,7 @@
         "@babel/core",
         "@types/react",
         "@types/react-dom",
-        "@types/react-native",
+        "@types/react-native"
       ],
       "enabled": false
     },
