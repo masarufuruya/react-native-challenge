@@ -1,0 +1,13 @@
+collection_app/node_modules/**/*
+collection_app/example/.expo/*
+collection_app/*.jks
+collection_app/*.p8
+collection_app/*.p12
+collection_app/*.key
+collection_app/*.mobileprovision
+collection_app/*.orig.*
+collection_app/web-build/
+collection_app/utils/config.ts
+
+# macOS
+.DS_Store
